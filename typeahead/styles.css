@@ -1,0 +1,35 @@
+window, html, body {
+  height: 100%;
+  width: 100%;
+}
+
+input {
+  border: 2px solid hsla(192, 100%, 50%, 1);
+  border-radius: 8px;
+  height: 30px;
+  font-size: 24px;
+  line-height: 30px;
+  padding: 8px 12px;
+  outline: none;
+  width: 300px;
+}
+
+ul {
+  border: 2px solid hsla(147, 100%, 50%, 1);
+  border-radius: 9px;
+  display: none;
+  flex-direction: column;
+  padding: 10px 0px;
+  width: 300px;
+}
+
+li {
+  list-style: none;
+  padding: 3px 20px;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+li:hover {
+  background-color: hsla(186, 100%, 70%, 1);
+}
