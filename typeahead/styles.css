@@ -11,7 +11,7 @@ input {
   line-height: 30px;
   padding: 8px 12px;
   outline: none;
-  width: 300px;
+  width: 285px;
 }
 
 ul {
@@ -20,7 +20,7 @@ ul {
   display: none;
   flex-direction: column;
   padding: 10px 0px;
-  width: 300px;
+  width: 324px;
 }
 
 li {

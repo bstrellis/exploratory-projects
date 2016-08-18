@@ -67,16 +67,11 @@ var checkIfStatesMatch = function () {
     document.querySelector('.states-list').style.display = "flex";
     var statesToDisplay = statesList.filter(function (state) {
       state = state.toLowerCase();
-      console.log('state', state);
-      console.log('userInput', userInput);
-      console.log(state.includes(userInput));
       if (state.includes(userInput)) {
         return state;
       }
     });
-    console.log('statesToDisplay', statesToDisplay);
 
-// does this make the first part of the if statement unnecessary?
     if (statesToDisplay.length === 0) {
       document.querySelector('.states-list').style.display = "none";
     }
