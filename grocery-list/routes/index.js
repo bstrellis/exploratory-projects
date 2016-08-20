@@ -1,14 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-// router.get('/', function(req, res, next) {
-//   res.render('index', { title: 'Express' });
-// });
 
+/* GET home page. */
 router.get('/', function(req, res){
-  res.render('index');
-  // default !== index --> ?
+  var data = {
+    town: "FUCK YOU HANDLEBARS"
+  };
+  res.render('main', data);
 });
 
 module.exports = router;
