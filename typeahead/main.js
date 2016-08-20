@@ -49,14 +49,13 @@ var statesList = ["Alabama",
                   "Wisconsin",
                   "Wyoming"];
 
-
 var checkIfStatesMatch = function () {
 // update display list every time a key is pressed
 
 // clear old list before renewing display
   var currentUL = document.querySelector('.states-list');
   while (currentUL.firstChild) {
-      currentUL.removeChild(currentUL.firstChild);
+    currentUL.removeChild(currentUL.firstChild);
   }
 
   var userInput = document.querySelector('.input').value.toLowerCase();
@@ -92,3 +91,7 @@ var checkIfStatesMatch = function () {
     })
   }
 }
+
+document.querySelector('.input').addEventListener('keyup', function () {
+  checkIfStatesMatch();
+});
