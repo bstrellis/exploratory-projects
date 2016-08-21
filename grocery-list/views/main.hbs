@@ -1,3 +1,15 @@
-{{!-- Our first template with tokens --}}
-<h1>Hello, {{town}} </h1>
-<div>Test test test</div>
+<div class="container">
+  <h1>What are you shopping for today?</h1>
+  <form class="add-item-form" method="POST" >
+    <input type="text"
+           placeholder="I desperately need..."
+           name="item"/>
+    <button>And so it shall be!</button>
+  </form>
+  <h1>Here is your list thus far:</h1>
+  <ol class="grocery-list">
+    {{#each groceries}}
+      <li>{{this}}</li>
+    {{/each}}
+  </ol>
+</div>
