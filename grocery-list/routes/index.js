@@ -15,8 +15,9 @@ router.get('/', function(req, res){
 // POST a change to the list
 router.post('/', function(req, res){
   data.groceries.unshift(req.body.item);
-  console.log(data.groceries.length);
-  res.send(data.groceries);
+  // this is working
+  console.log(data.groceries);
+  res.redirect('/success');
 });
 
 module.exports = router;
