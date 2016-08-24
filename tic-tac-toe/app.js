@@ -1,44 +1,50 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var exphbs  = require('express-handlebars');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const exphbs  = require('express-handlebars');
 
-var app = express();
+const app = express();
 
-var hbs = exphbs.create({
-    helpers: {
-        foo: function () { return 'FOO!'; },
-        bar: function () { return 'BAR!'; }
+const hbs = exphbs.create({
+  defaultLayout: 'main',
+  helpers: {
+    markBox(box) {
+      if (box === 'robotron') {
+        return 'o';
+      } else if (box === 'humanoid') {
+        return 'x';
+      } else {
+        return '';
+      }
     }
+  }
 });
 
 // view engine setup
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var index = require('./routes/index');
+const index = require('./routes/index');
 app.use('/', index);
-var heroicBiped = require('./routes/heroic-biped');
-app.use('/heroic-biped', heroicBiped);
-var nefariousRobotron = require('./routes/nefarious-robotron');
+const nefariousRobotron = require('./routes/nefarious-robotron');
 app.use('/nefarious-robotron', nefariousRobotron);
-var victory = require('./routes/victory');
+const victory = require('./routes/victory');
 app.use('/victory', victory);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });

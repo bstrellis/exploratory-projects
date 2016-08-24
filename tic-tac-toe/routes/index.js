@@ -1,17 +1,30 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+
+let board = {
+  boxes: ['',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  ''],
+  isRobotronsMove: false
+};
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  // if board hasn't loaded before, load.
-  // i guess i have to figure out how to do that
-
-  var board = {
-    boxes: ['robotron', 7, 'humanoid', undefined, 7, undefined, undefined, undefined, undefined]
-  };
-
   res.render('index', board);
 });
+
+// Update board after humanoid move
+router.post('/', function(req, res, next) {
+  board.boxes[req.body.indexClicked] = 'humanoid';
+  res.render('index', board);
+});
+
 
 module.exports = router;
 
@@ -19,9 +32,9 @@ module.exports = router;
 /*
 ALL JS IN ES6 THROUGHOUT - no var at all!
 *****
-html/handlebars for header, board, button
-button should only show after player has moved
-post requests to nefarious robotron and heroicbiped return altered board
+post requests to nefarious robotron and heroicbiped
+return altered board
 no longer possible to click occupied squares
 detects end of game and determines champion
+convert all js to es6!!
 */
