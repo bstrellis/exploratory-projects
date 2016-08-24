@@ -1,4 +1,18 @@
 body {
+  color: green;
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.gameboard {
+  display: flex;
+  flex-wrap: wrap;
+  height: 500px;
+  width: 500px;
+}
+
+.box {
+  border: 2px solid black;
+  height: 164px;
+  width: 130px;
 }

@@ -8,6 +8,13 @@ var exphbs  = require('express-handlebars');
 
 var app = express();
 
+var hbs = exphbs.create({
+    helpers: {
+        foo: function () { return 'FOO!'; },
+        bar: function () { return 'BAR!'; }
+    }
+});
+
 // view engine setup
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -20,10 +27,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var routes = require('./routes/index');
-app.use('/', routes);
-var users = require('./routes/users');
-app.use('/users', users);
+var index = require('./routes/index');
+app.use('/', index);
+var heroicBiped = require('./routes/heroic-biped');
+app.use('/heroic-biped', heroicBiped);
+var nefariousRobotron = require('./routes/nefarious-robotron');
+app.use('/nefarious-robotron', nefariousRobotron);
+var victory = require('./routes/victory');
+app.use('/victory', victory);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,5 +1,9 @@
-<h1>I am in the mood...</h1>
-<h1>the mood...</h1>
-<h1>for sexual healing.</h1>
-<h1>Come love me, baby.</h1>
-<h1>Come love me.</h1>
+<div class="gameboard">
+  {{#each boxes}}
+    <div class="box {{@index}}">
+      {{#if this}}
+        {{this}}
+      {{/if}}
+    </div>
+  {{/each}}
+</div>
