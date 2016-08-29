@@ -11,11 +11,25 @@ const app = express();
 const hbs = exphbs.create({
   defaultLayout: 'main',
   helpers: {
+    or(something, somethingElse) {
+      if (something || somethingElse) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    equal(something, somethingElse) {
+      if (something === somethingElse) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     markBox(box) {
       if (box === 'robotron') {
-        return 'o';
+        return 'robotron';
       } else if (box === 'humanoid') {
-        return 'x';
+        return 'humanoid';
       } else {
         return '';
       }

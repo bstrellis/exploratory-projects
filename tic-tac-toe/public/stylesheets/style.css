@@ -16,3 +16,9 @@ body {
   height: 164px;
   width: 130px;
 }
+
+.claimedBox {
+  border: 2px solid black;
+  height: 164px;
+  width: 130px;
+}

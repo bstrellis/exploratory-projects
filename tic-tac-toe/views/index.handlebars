@@ -1,21 +1,23 @@
 <div class="epic-lead-in">
-  <h5>Long ago, on a playground far, far away...</h5>
-  <h4>a little humanoid named Tim04305 played a game...</h4>
-  <h3>a game of tic-tac-toe to end all tic-tac-toeing...</h3>
-  <h2>His opponent? The nefarious Robotron.</h2>
-  <h4>Tim04305 never ticked a tack or tacked a toe again...</h4>
-  <h1>Are you brave enough to go tic-tac-toe-to-toe with Robotron?</h1>
   <h2>I warn you, he has bested many humanoids before you...</h2>
 </div>
 <div class="gameboard">
   {{#each boxes}}
-    <form class="box {{@index}}" action="/" method="POST">
-      <input type="hidden" name="indexClicked" value={{@index}} >
-      <input class="submit" type="submit">
-      {{markBox this}}
-    </form>
+    {{#if (or (equal this 'robotron') (equal this 'humanoid')) }}
+      <div class="claimedBox">{{markBox this}}</div>
+    {{else}}
+      <form class="box" action="/" method="POST">
+        <input type="hidden" name="indexClicked" value={{@index}} >
+        <button class="humanoidMove" type="submit">test</button>
+      </form>
+    {{/if}}
   {{/each}}
   {{#if isRobotronsMove}}
-    <button class="robotrons-move">Make your move, robotron!</div>
+    <form class="robotronsMove" action="/" method="POST">
+      <button class="robotronMove" type="submit">
+        I will not go gently into that dark night!
+      </button>
+    </form>
   {{/if}}
+
 </div>
