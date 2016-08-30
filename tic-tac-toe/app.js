@@ -27,9 +27,9 @@ const hbs = exphbs.create({
     },
     markBox(box) {
       if (box === 'robotron') {
-        return 'robotron';
+        return '0010101';
       } else if (box === 'humanoid') {
-        return 'humanoid';
+        return 'x';
       } else {
         return '';
       }
@@ -51,10 +51,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const index = require('./routes/index');
 app.use('/', index);
-const nefariousRobotron = require('./routes/nefarious-robotron');
-app.use('/nefarious-robotron', nefariousRobotron);
-const victory = require('./routes/victory');
-app.use('/victory', victory);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

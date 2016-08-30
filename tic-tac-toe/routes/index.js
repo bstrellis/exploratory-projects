@@ -1,21 +1,26 @@
 const express = require('express');
 const router = express.Router();
 
-let board = {
-  boxes: [undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined],
-  isRobotronsMove: false,
-  victor: undefined
-};
+const generateCleanBoard = () => {
+  return {
+    boxes: [0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8],
+    isRobotronsMove: false,
+    victor: undefined
+  }
+}
 
-const isHumanoidVictorious = boxes => {
+let board = generateCleanBoard();
+
+const isContestantVictorious = (contestant, boxes) => {
+  let victoryString = contestant.repeat(3);
   // check rows and columns
   let row0 = boxes.slice(0,3);
   let row1 = boxes.slice(3, 6);
@@ -26,28 +31,26 @@ const isHumanoidVictorious = boxes => {
   let column2 = [boxes[2], boxes[5], boxes[8]];
   let columns = [column0, column1, column2];
   for (let i = 0; i < rows.length; i++) {
-    if (rows[i].join('') === 'humanoidhumanoidhumanoid'
-       || columns[i].join('') === 'humanoidhumanoidhumanoid') {
-         return true;
+    if (rows[i].join('') === victoryString
+       || columns[i].join('') === victoryString) {
+         board.victor = contestant;
        }
   }
   // check diagonals
-  if (rows[1][1] === 'humanoid') {
-    if ((rows[0][0] === 'humanoid' && rows[2][2] === 'humanoid')
-       || (rows[2][0] === 'humanoid' && rows[0][2] === 'humanoid')) {
-      return true;
+  if (rows[1][1] === contestant) {
+    if ((rows[0][0] === contestant && rows[2][2] === contestant)
+       || (rows[2][0] === contestant && rows[0][2] === contestant)) {
+      board.victor = contestant;
     }
   }
-
-  return false;
 }
 
-const whereToBlock = boxes => {
-  // mark unclaimed boxes with their index so that it can be returned later
-  for (let index = 0; index < boxes.length; index++) {
-    if (boxes[index] === undefined) {
-      boxes[index] = index;
-    }
+const blockOrKill = (contestant, boxes) => {
+  let foe;
+  if (contestant === 'humanoid') {
+    foe = 'robotron';
+  } else {
+    foe = 'humanoid';
   }
 
   let row0 = boxes.slice(0,3);
@@ -62,17 +65,19 @@ const whereToBlock = boxes => {
   let diagonal2 = [boxes[0], boxes[4], boxes[8]];
   let diagonals = [diagonal1, diagonal2];
   let allPossibilities = [rows, columns, diagonals];
+
   let indexToClaim = [];
   for (let j = 0; j < allPossibilities.length; j++) {
     allPossibilities[j].forEach(line => {
-      if (line.indexOf('robotron') === -1) {
-        let humanoidCount = 0;
+      let contestantCount;
+      if (line.indexOf(foe) === -1) {
+        contestantCount = 0;
         for (let q = 0; q < line.length; q++) {
-          if (line[q] === 'humanoid') {
-            humanoidCount++;
+          if (line[q] === contestant) {
+            contestantCount++;
           }
         }
-        if (humanoidCount === 2) {
+        if (contestantCount === 2) {
           for (let z = 0; z < line.length; z++) {
             if (typeof line[z] === 'number') {
               indexToClaim.push(line[z]);
@@ -80,7 +85,7 @@ const whereToBlock = boxes => {
           }
         }
       } else {
-        // this line has been blocked already by Robotron
+        // this line has been blocked already by contestant
       }
     });
   }
@@ -91,18 +96,20 @@ const whereToBlock = boxes => {
 }
 
 const determinePotentialMoves = boxes => {
-  let potentialMoves = { toBlock: undefined,
+  let potentialMoves = { toConquer: undefined,
+                         toBlock: undefined,
                          centerAvailable: undefined,
                          cornersAvailable: [],
                          sidesAvailable: []
                        };
 
-  // toBlock
+  potentialMoves.toConquer = blockOrKill('robotron', boxes);
+  potentialMoves.toBlock = blockOrKill('humanoid', boxes);
 
-  potentialMoves.toBlock = whereToBlock(boxes);
   for (let index = 0; index < boxes.length; index++) {
     const corners = [0, 2, 6, 8];
-    if (!boxes[index]) {
+
+    if (typeof boxes[index] === 'number') {
       if (index === 4) {
         potentialMoves.centerAvailable = true;
       } else if (corners.indexOf(index) !== -1) {
@@ -112,6 +119,7 @@ const determinePotentialMoves = boxes => {
       }
     }
   }
+
   return potentialMoves;
 }
 
@@ -120,7 +128,9 @@ const determineRobotronsMove = boxes => {
 
   let unclaimedBoxes = determinePotentialMoves(boxes);
 
-  if (unclaimedBoxes.toBlock) {
+  if (unclaimedBoxes.toConquer) {
+    boxToClaim = unclaimedBoxes.toConquer;
+  } else if (unclaimedBoxes.toBlock) {
     boxToClaim = unclaimedBoxes.toBlock;
   } else if (unclaimedBoxes.centerAvailable) {
     boxToClaim = 4;
@@ -131,7 +141,9 @@ const determineRobotronsMove = boxes => {
     let randomSide = Math.floor(Math.random()*unclaimedBoxes.sidesAvailable.length);
     boxToClaim = unclaimedBoxes.cornersAvailable[randomSide];
   }
+
   boxes[boxToClaim] = 'robotron';
+
   return boxes;
 }
 
@@ -144,28 +156,23 @@ router.get('/', function(req, res, next) {
 
 // Update board after a move is made
 router.post('/', function(req, res, next) {
-  let humanoidIsVictorious;
   if (board.isRobotronsMove) {
     board.boxes = determineRobotronsMove(board.boxes);
+    isContestantVictorious('robotron', board.boxes);
     board.isRobotronsMove = false;
   } else {
     board.boxes[req.body.indexClicked] = 'humanoid';
-    humanoidIsVictorious = isHumanoidVictorious(board.boxes);
+    isContestantVictorious('humanoid', board.boxes);
     board.isRobotronsMove = true;
   }
-  let routeRequired = humanoidIsVictorious ? '/victory' : '/';
 
-  res.redirect(routeRequired);
+  res.redirect('/');
 });
 
-module.exports = router;
+router.post('/restart-game', function(req, res, next) {
+  board = generateCleanBoard();
+  res.redirect('/');
+});
 
-// TODO THIS COMMIT
-/*
-ALL JS IN ES6 THROUGHOUT - no var at all!
-*****
-MAKE IT FUCKING RESET???
-determine robotron's move
-detects end of game and determines champion
-finalize css
-*/
+
+module.exports = router;
