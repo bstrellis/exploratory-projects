@@ -43,6 +43,15 @@ const isContestantVictorious = (contestant, boxes) => {
       board.victor = contestant;
     }
   }
+
+  // check draw
+  let isBoardFull = boxes.every(box => {
+    return typeof box === 'string';
+  });
+
+  if (isBoardFull && !board.victor) {
+    board.victor = 'No one';
+  }
 }
 
 const blockOrKill = (contestant, boxes) => {

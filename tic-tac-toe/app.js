@@ -27,7 +27,7 @@ const hbs = exphbs.create({
     },
     markBox(box) {
       if (box === 'robotron') {
-        return '0010101';
+        return '01';
       } else if (box === 'humanoid') {
         return 'x';
       } else {

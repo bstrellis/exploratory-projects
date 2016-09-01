@@ -1,7 +1,7 @@
 {{#if victor}}
 
   <div class="champions-banner">{{victor}} reigns supreme!</div>
-  <form class="restart-game" action="/restart-game" method="POST">
+  <form action="/restart-game" method="POST">
     <button class="restart" type="submit">
       Zounds! New Game.
     </button>
@@ -10,38 +10,38 @@
 {{else}}
 
   <div class="epic-lead-in">
-    <h2>Tic-Tac-Throwdown</h2>
+    <div class="mugshot"></div>
     <div class="opponent-declaration">
-      <div class="introducing">Your opponent:</div>
-      <div class="champion-of-evil">robotron!!#!#%</div>
-      <div class="mugshot"></div>
+      <div class="opener">Tic-Tac-Toetron</div>
+      <div class="introducing">Your opponent: Robotron !!01!!</div>
     </div>
   </div>
   <div class="gameboard">
     {{#each boxes}}
       {{#if (or (equal this 'robotron') (equal this 'humanoid')) }}
-        <div class="claimed-box">{{markBox this}}</div>
+        <div class="claimed box">{{markBox this}}</div>
       {{else}}
         {{#if ../isRobotronsMove}}
-          <div class="unclickable"></div>
+          <div class="unclickable box"></div>
         {{else}}
           <form class="box" action="/" method="POST">
             <input type="hidden" name="indexClicked" value={{@index}} >
-            <button class="humanoid-move" type="submit">test</button>
+            <button class="humanoid-move" type="submit"></button>
           </form>
         {{/if}}
       {{/if}}
     {{/each}}
-
+  </div>
+  <div class="buttons">
     {{#if isRobotronsMove}}
-    <form class="robotrons-move" action="/" method="POST">
-      <button class="robotron-move" type="submit">
+    <form action="/" method="POST">
+      <button class="robotrons-move" type="submit">
         Do your worst, Robotron!!
       </button>
     </form>
     {{/if}}
 
-    <form class="restart-game" action="/restart-game" method="POST">
+    <form action="/restart-game" method="POST">
       <button class="restart" type="submit">
         Zounds! New Game.
       </button>
