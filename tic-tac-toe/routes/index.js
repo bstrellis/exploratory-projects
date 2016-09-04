@@ -15,7 +15,7 @@ const generateCleanBoard = () => {
     isRobotronsMove: false,
     victor: undefined
   }
-}
+};
 
 let board = generateCleanBoard();
 
@@ -52,7 +52,7 @@ const isContestantVictorious = (contestant, boxes) => {
   if (isBoardFull && !board.victor) {
     board.victor = 'No one';
   }
-}
+};
 
 const blockOrKill = (contestant, boxes) => {
   let foe;
@@ -102,7 +102,7 @@ const blockOrKill = (contestant, boxes) => {
   // just block the first line and hope that the humanoid
   // doesn't notice the other
   return indexToClaim[0];
-}
+};
 
 const determinePotentialMoves = boxes => {
   let potentialMoves = { toConquer: undefined,
@@ -130,7 +130,7 @@ const determinePotentialMoves = boxes => {
   }
 
   return potentialMoves;
-}
+};
 
 const determineRobotronsMove = boxes => {
   let boxToClaim;
